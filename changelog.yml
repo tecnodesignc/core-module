@@ -1,0 +1,5 @@
+url: https://github.com/tecnodesignc/Platform
+versions:
+  "1.0.0":
+    added:
+      - Inital version core module
