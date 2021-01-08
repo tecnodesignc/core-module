@@ -73,7 +73,7 @@ class InstallCommand extends Command
         ])->install($this);
 
         if ($success) {
-            $this->info('Platform ready! You can now login with your username and password at /admin');
+            $this->info('Platform ready! You can now login with your username and password at /backend');
         }
     }
 

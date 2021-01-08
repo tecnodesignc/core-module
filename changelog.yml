@@ -3,3 +3,13 @@ versions:
   "1.0.0":
     added:
       - Inital version core module
+  "1.0.1":
+      changed:
+        - Version composer packages
+  "1.0.2":
+      changed:
+        - Info install console route administrator
+        - Route config assets in AdminBaseController
+        - Default Theme Frontend
+      deleted:
+        - Midellware and publish config localeSessionRedirect

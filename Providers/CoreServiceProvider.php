@@ -44,7 +44,6 @@ class CoreServiceProvider extends ServiceProvider
             'auth.admin'            => 'AdminMiddleware',
             'public.checkLocale'    => 'PublicMiddleware',
             'localizationRedirect'  => 'LocalizationMiddleware',
-            'localeSessionRedirect' => 'LocaleSessionRedirectMiddleware',
             'can' => 'Authorization',
         ],
     ];
@@ -56,7 +55,6 @@ class CoreServiceProvider extends ServiceProvider
         $this->publishConfig('core', 'core');
         $this->publishConfig('core', 'settings');
         $this->publishConfig('core', 'permissions');
-        $this->publishConfig('core', 'settings-fields');
 
         $this->registerMiddleware($this->app['router']);
         $this->registerModuleResourceNamespaces();
@@ -175,7 +173,7 @@ class CoreServiceProvider extends ServiceProvider
 
             $themes = [
                 'backend' => $themeManager->find(config('encore.core.core.admin-theme'))->getPath(),
-                'frontend' => $themeManager->find(setting('core::template', null, 'Flatly'))->getPath(),
+                'frontend' => $themeManager->find(setting('core::template', null, 'Encore'))->getPath(),
             ];
         }
 

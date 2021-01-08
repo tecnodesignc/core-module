@@ -37,7 +37,7 @@ class AdminBaseController extends Controller
      */
     private function addAssets()
     {
-        foreach (config('asgard.core.core.admin-assets') as $assetName => $path) {
+        foreach (config('encore.core.core.admin-assets') as $assetName => $path) {
             $path = $this->assetFactory->make($path)->url();
             $this->assetManager->addAsset($assetName, $path);
         }
@@ -48,7 +48,7 @@ class AdminBaseController extends Controller
      */
     private function requireDefaultAssets()
     {
-        $this->assetPipeline->requireCss(config('asgard.core.core.admin-required-assets.css'));
-        $this->assetPipeline->requireJs(config('asgard.core.core.admin-required-assets.js'));
+        $this->assetPipeline->requireCss(config('encore.core.core.admin-required-assets.css'));
+        $this->assetPipeline->requireJs(config('encore.core.core.admin-required-assets.js'));
     }
 }
