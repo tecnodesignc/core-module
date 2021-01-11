@@ -11,5 +11,12 @@ versions:
         - Info install console route administrator
         - Route config assets in AdminBaseController
         - Default Theme Frontend
-      deleted:
+      removed:
         - Midellware and publish config localeSessionRedirect
+  "1.0.3":
+      added:
+        - Lang fiels
+      changed:
+        - File settings.php
+      removed:
+        - File settings-fields.php
