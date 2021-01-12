@@ -30,4 +30,14 @@ return [
         'view' => 'core::fields.select-locales',
         'translatable' => false,
     ],
+    'id-facebook' => [
+        'description' => 'blog::settings.id-facebook',
+        'view' => 'text',
+        'translatable' => false,
+    ],
+    'twitter' => [
+        'description' => 'blog::settings.twitter Account',
+        'view' => 'text',
+        'translatable' => false,
+    ],
 ];
