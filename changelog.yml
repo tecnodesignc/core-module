@@ -22,5 +22,7 @@ versions:
         - File settings-fields.php
   "1.0.4":
       added:
-        - added translate message exceptions
-        - added canonical helpers
+        - Translate message exceptions
+        - Canonical helpers
+        - Facebook and twitter settings
+        - Settings contact Site
