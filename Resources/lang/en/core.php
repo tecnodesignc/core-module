@@ -89,4 +89,8 @@ return [
     'mark as online' => 'Mark as online',
     'mark as offline' => 'Mark as offline',
     'back to backend' => 'Back to backend',
+    'exceptions'=>[
+        'item no found'=>'Oops! This :item was not found.',
+
+    ]
 ];
