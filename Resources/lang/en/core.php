@@ -92,5 +92,6 @@ return [
     'exceptions'=>[
         'item no found'=>'Oops! This :item was not found.',
 
-    ]
+    ],
+    'cache cleared'=>'Response cache cleared!'
 ];

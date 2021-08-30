@@ -112,5 +112,5 @@ interface BaseRepository
      * @param array $criteria
      * @param array $params
      */
-    public function getItem(array $criteria, array $params);
+    public function getItem(array $criteria, object $params);
 }

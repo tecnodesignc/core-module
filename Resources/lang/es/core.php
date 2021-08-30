@@ -88,4 +88,5 @@ return [
     'mark as online' => 'Marcar como Activo',
     'mark as offline' => 'Marcar como Inactivo',
     'back to backend' => 'Regresar a la Administración',
+    'cache cleared'=>'La Cache del Sitio fue borrada!'
 ];

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Blade\EncoreEditorDirective;
+use Modules\Core\Console\ClearPageCache;
 use Modules\Core\Console\DeleteModuleCommand;
 use Modules\Core\Console\DownloadModuleCommand;
 use Modules\Core\Console\InstallCommand;
@@ -133,6 +134,7 @@ class CoreServiceProvider extends ServiceProvider
             PublishModuleAssetsCommand::class,
             DownloadModuleCommand::class,
             DeleteModuleCommand::class,
+            ClearPageCache::class
         ]);
     }
 

@@ -26,3 +26,14 @@ versions:
         - Canonical helpers
         - Facebook and twitter settings
         - Settings contact Site
+  "1.0.5":
+      added:
+        - ClearPageCache
+        - Menu Item ClearCache
+        - CoreController
+        - backendRoutes
+        - Package CachePage
+      changed:
+        - Validate Assest path in EncoreAssetManager and EncoreAssetPipeline
+      removed:
+        - Roles Entity of BaseApiControlle

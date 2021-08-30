@@ -192,6 +192,9 @@ abstract class EloquentBaseRepository implements BaseRepository
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getItemsBy($params = false)
     {
         /*== initialize query ==*/
@@ -253,7 +256,9 @@ abstract class EloquentBaseRepository implements BaseRepository
             return $query->get();
         }
     }
-
+    /**
+     * @inheritdoc
+     */
 
     public function getItem($criteria, $params = false)
     {
@@ -273,6 +278,9 @@ abstract class EloquentBaseRepository implements BaseRepository
         /*== FILTER ==*/
         if (isset($params->filter)) {
             $filter = $params->filter;
+
+
+
 
             if (isset($filter->field))//Filter by specific field
                 $field = $filter->field;

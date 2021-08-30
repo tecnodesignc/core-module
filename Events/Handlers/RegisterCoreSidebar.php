@@ -4,6 +4,7 @@ namespace Modules\Core\Events\Handlers;
 
 use Maatwebsite\Sidebar\Group;
 use Maatwebsite\Sidebar\Menu;
+use Maatwebsite\Sidebar\Item;
 use Modules\Core\Sidebar\AbstractAdminSidebar;
 
 class RegisterCoreSidebar extends AbstractAdminSidebar
@@ -20,6 +21,12 @@ class RegisterCoreSidebar extends AbstractAdminSidebar
             $group->authorize(
                 $this->auth->hasAccess('core.sidebar.group')
             );
+
+            $group->item(trans('core::sidebar.clear cache'), function (Item $item) {
+                $item->icon('fa fa-eraser');
+                $item->weight(-1);
+                $item->route('admin.core.cache.clear');
+            });
         });
 
         return $menu;

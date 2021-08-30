@@ -180,8 +180,13 @@ class EncoreAssetPipeline implements AssetPipeline
      */
     private function guardForAssetNotFound($assetPath)
     {
-        if (is_null($assetPath)) {
-            throw new AssetNotFoundException($assetPath);
+        try {
+            if (is_null($assetPath)) {
+                var_dump(is_null($assetPath));
+                throw new AssetNotFoundException($assetPath);
+            }
+        }catch (\Exception $e){
+            \Log::error($e);
         }
     }
 }

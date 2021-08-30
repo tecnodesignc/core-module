@@ -6,7 +6,6 @@ use Modules\Core\Http\Controllers\BasePublicController;
 use Modules\Core\Http\Controllers\Api\PermissionsApiController;
 use Mockery\CountValidator\Exception;
 use Illuminate\Support\Facades\Auth;
-use Modules\Iprofile\Entities\Role;
 use Validator;
 
 class BaseApiController extends BasePublicController
@@ -37,7 +36,8 @@ class BaseApiController extends BasePublicController
         // set current auth user
         $this->user = Auth::user();
         $roles = $this->user ? $this->user->roles()->get() : false;//Role data
-        $role = ($roles && isset($setting->roleId)) ? $roles->where("id", $setting->roleId)->first() : false;
+        $role = ($roles && isset($setting->roleId)) ? $roles->where("id", $setting->roleId)->first() : $roles[0];
+
 
         //Return params
         $params = (object)[
@@ -49,7 +49,8 @@ class BaseApiController extends BasePublicController
             "fields" => $request->input('fields') ? explode(",", $request->input('fields')) : $default->fields,
             'role' => $role,
             'roles' => $roles,
-            "user" => $this->user
+            "user" => $this->user,
+            'permissions' =>array_merge($this->user->permissions??[], $role->permissions??[]),
         ];
         return $params;//Response
     }
