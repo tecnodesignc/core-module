@@ -2,68 +2,29 @@
 
 namespace Modules\Core\Providers;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+
+class RouteServiceProvider extends RoutingServiceProvider
 {
     /**
-     * The module namespace to assume when generating URLs to actions.
-     *
-     * @var string
+     * @return string
      */
-    protected $moduleNamespace = 'Modules\Core\Http\Controllers';
-
-    /**
-     * Called before routes are registered.
-     *
-     * Register any model bindings or pattern based filters.
-     *
-     * @return void
-     */
-    public function boot()
+    protected function getFrontendRoute()
     {
-        parent::boot();
+        // TODO: Implement getFrontendRoute() method.
     }
-
     /**
-     * Define the routes for the application.
-     *
-     * @return void
+     * @return string
      */
-    public function map()
+    protected function getBackendRoute()
     {
-        $this->mapApiRoutes();
-
-        $this->mapWebRoutes();
+        return __DIR__ . '/../Http/backendRoutes.php';
     }
-
     /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
+     * @return string
      */
-    protected function mapWebRoutes()
+    protected function getApiRoute()
     {
-        Route::middleware('web')
-            ->namespace($this->moduleNamespace)
-            ->group(module_path('Core', '/Routes/web.php'));
-    }
-
-    /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->moduleNamespace)
-            ->group(module_path('Core', '/Routes/api.php'));
+        // TODO: Implement getApiRoute() method.
     }
 }
