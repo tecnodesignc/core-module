@@ -37,3 +37,6 @@ versions:
         - Validate Assest path in EncoreAssetManager and EncoreAssetPipeline
       removed:
         - Roles Entity of BaseApiControlle
+  "1.0.6":
+      change:
+        - Fix RouteServiceProvider
