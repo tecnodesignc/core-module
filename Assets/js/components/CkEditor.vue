@@ -38,9 +38,9 @@
             config: {
                 type: Object,
                 default: () => {
-                    if (window.AsgardCMS.ckeditorCustomConfig !== '') {
+                    if (window.EncoreCMS.ckeditorCustomConfig !== '') {
                         return {
-                            customConfig: window.AsgardCMS.ckeditorCustomConfig,
+                            customConfig: window.EncoreCMS.ckeditorCustomConfig,
                         };
                     }
 

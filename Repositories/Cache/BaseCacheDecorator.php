@@ -2,35 +2,47 @@
 
 namespace Modules\Core\Repositories\Cache;
 
+use Closure;
 use Illuminate\Cache\Repository;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Repositories\BaseRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use function serialize;
 
 abstract class BaseCacheDecorator implements BaseRepository
 {
     /**
-     * @var \Modules\Core\Repositories\BaseRepository
+     * @var BaseRepository
      */
-    protected $repository;
+    protected BaseRepository $repository;
+
     /**
      * @var Repository
      */
-    protected $cache;
+    protected mixed $cache;
     /**
      * @var string The entity name
      */
-    protected $entityName;
+    protected string $entityName;
     /**
      * @var string The application locale
      */
-    protected $locale;
+    protected string $locale;
 
     /**
      * @var int caching time
      */
-    protected $cacheTime;
+    protected mixed $cacheTime;
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function __construct()
     {
         $this->cache = app(Repository::class);
@@ -39,9 +51,10 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * @param int $id
+     * @return Model|Collection|Builder|array|null
      */
-    public function find($id)
+    public function find(int $id): Model|Collection|Builder|array|null
     {
         return $this->remember(function () use ($id) {
             return $this->repository->find($id);
@@ -49,9 +62,10 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Return a collection of all elements of the resource
+     * @return Collection
      */
-    public function all()
+    public function all(): Collection
     {
         return $this->remember(function () {
             return $this->repository->all();
@@ -59,7 +73,7 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * @return Builder
      */
     public function allWithBuilder() : Builder
     {
@@ -69,9 +83,11 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Paginate the model to $perPage items per page
+     * @param int $perPage
+     * @return LengthAwarePaginator
      */
-    public function paginate($perPage = 15)
+    public function paginate(int $perPage = 15): LengthAwarePaginator
     {
         return $this->remember(function () use ($perPage) {
             return $this->repository->paginate($perPage);
@@ -79,29 +95,11 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Create a resource
+     * @param  $data
+     * @return Model|Collection|Builder|array|null
      */
-    public function allTranslatedIn($lang)
-    {
-        return $this->remember(function () use ($lang) {
-            return $this->repository->allTranslatedIn($lang);
-        });
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function findBySlug($slug)
-    {
-        return $this->remember(function () use ($slug) {
-            return $this->repository->findBySlug($slug);
-        });
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function create($data)
+    public function create($data):Model|Collection|Builder|array|null
     {
         $this->cache->tags($this->entityName)->flush();
 
@@ -109,9 +107,12 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Update a resource
+     * @param  $model
+     * @param array $data
+     * @return Model|Collection|Builder|array|null
      */
-    public function update($model, $data)
+    public function update($model, array $data):Model|Collection|Builder|array|null
     {
         $this->cache->tags($this->entityName)->flush();
 
@@ -119,9 +120,11 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Destroy a resource
+     * @param  $model
+     * @return bool
      */
-    public function destroy($model)
+    public function destroy($model): bool
     {
         $this->cache->tags($this->entityName)->flush();
 
@@ -129,9 +132,35 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Return resources translated in the given language
+     * @param string $lang
+     * @return Collection
      */
-    public function findByAttributes(array $attributes)
+    public function allTranslatedIn(string $lang): Collection
+    {
+        return $this->remember(function () use ($lang) {
+            return $this->repository->allTranslatedIn($lang);
+        });
+    }
+
+    /**
+     * Find a resource by the given slug
+     * @param string $slug
+     * @return Model|Collection|Builder|array|null
+     */
+    public function findBySlug(string $slug): Model|Collection|Builder|array|null
+    {
+        return $this->remember(function () use ($slug) {
+            return $this->repository->findBySlug($slug);
+        });
+    }
+
+    /**
+     * Find a resource by an array of attributes
+     * @param  array $attributes
+     * @return Model|Collection|Builder|array|null
+     */
+    public function findByAttributes(array $attributes): Model|Collection|Builder|array|null
     {
         return $this->remember(function () use ($attributes) {
             return $this->repository->findByAttributes($attributes);
@@ -139,19 +168,11 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Return a collection of elements who's ids match
+     * @param  array $ids
+     * @return Collection
      */
-    public function getByAttributes(array $attributes, $orderBy = null, $sortOrder = 'asc')
-    {
-        return $this->remember(function () use ($attributes, $orderBy, $sortOrder) {
-            return $this->repository->getByAttributes($attributes, $orderBy, $sortOrder);
-        });
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function findByMany(array $ids)
+    public function findByMany(array $ids): Collection
     {
         return $this->remember(function () use ($ids) {
             return $this->repository->findByMany($ids);
@@ -159,9 +180,24 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Get resources by an array of attributes
+     * @param  array $attributes
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return Collection
      */
-    public function clearCache()
+    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc'): Collection
+    {
+        return $this->remember(function () use ($attributes, $orderBy, $sortOrder) {
+            return $this->repository->getByAttributes($attributes, $orderBy, $sortOrder);
+        });
+    }
+
+    /**
+     * Clear the cache for this Repositories' Entity
+     * @return bool
+     */
+    public function clearCache(): bool
     {
         $store = $this->cache;
 
@@ -173,11 +209,11 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * @param \Closure $callback
-     * @param null|string $key
+     * @param Closure $callback
+     * @param string|null $key
      * @return mixed
      */
-    protected function remember(\Closure $callback, $key = null)
+    protected function remember(Closure $callback, string $key = null): mixed
     {
         $cacheKey = $this->makeCacheKey($key);
 
@@ -193,10 +229,10 @@ abstract class BaseCacheDecorator implements BaseRepository
     /**
      * Generate a cache key with the called method name and its arguments
      * If a key is provided, use that instead
-     * @param null|string $key
+     * @param string|null $key
      * @return string
      */
-    private function makeCacheKey($key = null): string
+    private function makeCacheKey(string $key = null): string
     {
         if ($key !== null) {
             return $key;
@@ -206,7 +242,7 @@ abstract class BaseCacheDecorator implements BaseRepository
 
         $backtrace = debug_backtrace()[2];
 
-        return sprintf("$cacheKey %s %s", $backtrace['function'], \serialize($backtrace['args']));
+        return sprintf("$cacheKey %s %s", $backtrace['function'], serialize($backtrace['args']));
     }
 
     /**
@@ -222,12 +258,11 @@ abstract class BaseCacheDecorator implements BaseRepository
     }
 
     /**
-     * List or resources
-     *
-     * @param $params
-     * @return collection
+     * Get resources by an array of attributes
+     * @param object $params
+     * @return LengthAwarePaginator|Collection
      */
-    public function getItemsBy($params)
+    public function getItemsBy(object $params): Collection|LengthAwarePaginator
     {
         return $this->remember(function () use ($params) {
             return $this->repository->getItemsBy($params);
@@ -237,12 +272,11 @@ abstract class BaseCacheDecorator implements BaseRepository
 
     /**
      * find a resource by id or slug
-     *
-     * @param $criteria
-     * @param $params
-     * @return object
+     * @param string $criteria
+     * @param object $params
+     * @return Model|Collection|Builder|array|null
      */
-    public function getItem($criteria, $params)
+    public function getItem(string $criteria, object $params): Model|Collection|Builder|array|null
     {
         return $this->remember(function () use ($criteria, $params) {
             return $this->repository->getItem($criteria, $params);

@@ -3,7 +3,9 @@
 namespace Modules\Core\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Repositories\BaseRepository;
 
 /**
@@ -14,22 +16,23 @@ use Modules\Core\Repositories\BaseRepository;
 abstract class EloquentBaseRepository implements BaseRepository
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Model An instance of the Eloquent Model
+     * @var Model An instance of the Eloquent Model
      */
-    protected $model;
+    protected Model $model;
 
     /**
      * @param Model $model
      */
-    public function __construct($model)
+    public function __construct(Model $model)
     {
         $this->model = $model;
     }
 
     /**
-     * @inheritdoc
+     * @param int $id
+     * @return Model|Collection|Builder|array|null
      */
-    public function find($id)
+    public function find(int $id): Model|Collection|Builder|array|null
     {
         if (method_exists($this->model, 'translations')) {
             return $this->model->with('translations')->find($id);
@@ -39,9 +42,10 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Return a collection of all elements of the resource
+     * @return Collection
      */
-    public function all()
+    public function all(): Collection
     {
         if (method_exists($this->model, 'translations')) {
             return $this->model->with('translations')->orderBy('created_at', 'DESC')->get();
@@ -51,9 +55,9 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * @return Builder
      */
-    public function allWithBuilder() : Builder
+    public function allWithBuilder(): Builder
     {
         if (method_exists($this->model, 'translations')) {
             return $this->model->with('translations');
@@ -63,9 +67,11 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Paginate the model to $perPage items per page
+     * @param int $perPage
+     * @return LengthAwarePaginator
      */
-    public function paginate($perPage = 15)
+    public function paginate(int $perPage = 15): LengthAwarePaginator
     {
         if (method_exists($this->model, 'translations')) {
             return $this->model->with('translations')->orderBy('created_at', 'DESC')->paginate($perPage);
@@ -75,17 +81,22 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Create a resource
+     * @param  $data
+     * @return Model|Collection|Builder|array|null
      */
-    public function create($data)
+    public function create($data): Model|Collection|Builder|array|null
     {
         return $this->model->create($data);
     }
 
     /**
-     * @inheritdoc
+     * Update a resource
+     * @param  $model
+     * @param array $data
+     * @return Model|Collection|Builder|array|null
      */
-    public function update($model, $data)
+    public function update($model, array $data): Model|Collection|Builder|array|null
     {
         $model->update($data);
 
@@ -93,17 +104,21 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Destroy a resource
+     * @param  $model
+     * @return bool
      */
-    public function destroy($model)
+    public function destroy($model): bool
     {
         return $model->delete();
     }
 
     /**
-     * @inheritdoc
+     * Return resources translated in the given language
+     * @param string $lang
+     * @return Collection
      */
-    public function allTranslatedIn($lang)
+    public function allTranslatedIn(string $lang): Collection
     {
         return $this->model->whereHas('translations', function (Builder $q) use ($lang) {
             $q->where('locale', "$lang");
@@ -111,9 +126,11 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Find a resource by the given slug
+     * @param string $slug
+     * @return Model|Collection|Builder|array|null
      */
-    public function findBySlug($slug)
+    public function findBySlug(string $slug): Model|Collection|Builder|array|null
     {
         if (method_exists($this->model, 'translations')) {
             return $this->model->whereHas('translations', function (Builder $q) use ($slug) {
@@ -125,9 +142,11 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Find a resource by an array of attributes
+     * @param  array $attributes
+     * @return Model|Collection|Builder|array|null
      */
-    public function findByAttributes(array $attributes)
+    public function findByAttributes(array $attributes): Model|Collection|Builder|array|null
     {
         $query = $this->buildQueryByAttributes($attributes);
 
@@ -135,9 +154,29 @@ abstract class EloquentBaseRepository implements BaseRepository
     }
 
     /**
-     * @inheritdoc
+     * Return a collection of elements who's ids match
+     * @param  array $ids
+     * @return Collection
      */
-    public function getByAttributes(array $attributes, $orderBy = null, $sortOrder = 'asc')
+    public function findByMany(array $ids): Collection
+    {
+        $query = $this->model->query();
+
+        if (method_exists($this->model, 'translations')) {
+            $query = $query->with('translations');
+        }
+
+        return $query->whereIn("id", $ids)->get();
+    }
+
+    /**
+     * Get resources by an array of attributes
+     * @param  array $attributes
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return Collection
+     */
+    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc'): Collection
     {
         $query = $this->buildQueryByAttributes($attributes, $orderBy, $sortOrder);
 
@@ -146,12 +185,12 @@ abstract class EloquentBaseRepository implements BaseRepository
 
     /**
      * Build Query to catch resources by an array of attributes and params
-     * @param  array $attributes
-     * @param  null|string $orderBy
-     * @param  string $sortOrder
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param array $attributes
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return Builder
      */
-    private function buildQueryByAttributes(array $attributes, $orderBy = null, $sortOrder = 'asc')
+    private function buildQueryByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc'): Builder
     {
         $query = $this->model->query();
 
@@ -170,32 +209,22 @@ abstract class EloquentBaseRepository implements BaseRepository
         return $query;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function findByMany(array $ids)
-    {
-        $query = $this->model->query();
-
-        if (method_exists($this->model, 'translations')) {
-            $query = $query->with('translations');
-        }
-
-        return $query->whereIn("id", $ids)->get();
-    }
 
     /**
-     * @inheritdoc
+     * Clear the cache for this Repositories' Entity
+     * @return bool
      */
-    public function clearCache()
+    public function clearCache():bool
     {
         return true;
     }
 
     /**
-     * @inheritdoc
+     * Get resources by an array of attributes
+     * @param bool|object $params
+     * @return LengthAwarePaginator|Collection
      */
-    public function getItemsBy($params = false)
+    public function getItemsBy(bool|object $params = false): Collection|LengthAwarePaginator
     {
         /*== initialize query ==*/
         $query = $this->model->query();
@@ -256,11 +285,15 @@ abstract class EloquentBaseRepository implements BaseRepository
             return $query->get();
         }
     }
+
     /**
-     * @inheritdoc
+     * Get resources by an array of attributes
+     * @param string $criteria
+     * @param bool|object $params
+     * @return Model|Collection|Builder|array|null
      */
 
-    public function getItem($criteria, $params = false)
+    public function getItem(string $criteria, $params = false): Model|Collection|Builder|array|null
     {
         //Initialize query
         $query = $this->model->query();
@@ -278,8 +311,6 @@ abstract class EloquentBaseRepository implements BaseRepository
         /*== FILTER ==*/
         if (isset($params->filter)) {
             $filter = $params->filter;
-
-
 
 
             if (isset($filter->field))//Filter by specific field

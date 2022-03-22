@@ -61,7 +61,7 @@ return [
         'translatable' => false,
     ],
     'instagram' => [
-        'description' => 'core::settings.phone',
+        'description' => 'core::settings.instagram',
         'view' => 'text',
         'translatable' => false,
     ],

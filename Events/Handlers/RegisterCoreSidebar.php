@@ -14,21 +14,8 @@ class RegisterCoreSidebar extends AbstractAdminSidebar
      * @param Menu $menu
      * @return Menu
      */
-    public function extendWith(Menu $menu)
+    public function extendWith(Menu $menu): Menu
     {
-        $menu->group(trans('core::sidebar.content'), function (Group $group) {
-            $group->weight(50);
-            $group->authorize(
-                $this->auth->hasAccess('core.sidebar.group')
-            );
-
-            $group->item(trans('core::sidebar.clear cache'), function (Item $item) {
-                $item->icon('fa fa-eraser');
-                $item->weight(-1);
-                $item->route('admin.core.cache.clear');
-            });
-        });
-
-        return $menu;
+       return $menu;
     }
 }
