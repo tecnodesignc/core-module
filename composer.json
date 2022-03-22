@@ -31,7 +31,7 @@
         "composer/installers": "^2.1",
         "nwidart/laravel-modules": "^9.0",
         "laravelcollective/html": "^6.3",
-        "laracasts/presenter": "~0.2",
+        "tecnodesignc/presenter": "^0.2.5",
         "astrotomic/laravel-translatable": "^11.10",
         "mcamara/laravel-localization": "^1.7",
         "tecnodesignc/stylist": "^2.0.1",
