@@ -32,14 +32,14 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = false;
+    protected bool $defer = false;
 
     /**
      * The filters base class name.
      *
      * @var array
      */
-    protected $middleware = [
+    protected array $middleware = [
         'Core' => [
             'permissions'           => 'PermissionMiddleware',
             'auth.admin'            => 'AdminMiddleware',
@@ -101,7 +101,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }
@@ -249,7 +249,7 @@ class CoreServiceProvider extends ServiceProvider
      * @param $package
      * @return string
      */
-    private function getConfigFilename($file)
+    private function getConfigFilename($file): string
     {
         return preg_replace('/\\.[^.\\s]{3,4}$/', '', basename($file));
     }
@@ -265,9 +265,14 @@ class CoreServiceProvider extends ServiceProvider
             return;
         }
 
-        $localeConfig = $this->app['cache']
-            ->tags('setting.settings', 'global')
-            ->remember(
+
+
+        $store = $this->app['cache'];
+        if (method_exists($this->app['cache']->getStore(), 'tags')) {
+            $store = $store->tags('setting.settings', 'global');
+        }
+
+        $localeConfig=  $store->remember(
                 'encore.locales',
                 120,
                 function () {
@@ -295,7 +300,7 @@ class CoreServiceProvider extends ServiceProvider
      * @param string $path
      * @return bool
      */
-    private function hasPublishedTranslations($path)
+    private function hasPublishedTranslations(string $path): bool
     {
         return is_dir($path);
     }
@@ -305,7 +310,7 @@ class CoreServiceProvider extends ServiceProvider
      * @param Module $module
      * @return bool
      */
-    private function moduleHasCentralisedTranslations(Module $module)
+    private function moduleHasCentralisedTranslations(Module $module): bool
     {
         return is_dir($this->getCentralisedTranslationPath($module));
     }

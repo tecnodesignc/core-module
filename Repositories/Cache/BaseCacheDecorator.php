@@ -101,7 +101,11 @@ abstract class BaseCacheDecorator implements BaseRepository
      */
     public function create($data):Model|Collection|Builder|array|null
     {
-        $this->cache->tags($this->entityName)->flush();
+        if (method_exists($this->cache->getStore(), 'tags')) {
+            $this->cache->tags($this->entityName)->flush();
+        }else{
+            $this->cache->flush();
+        }
 
         return $this->repository->create($data);
     }
@@ -114,7 +118,11 @@ abstract class BaseCacheDecorator implements BaseRepository
      */
     public function update($model, array $data):Model|Collection|Builder|array|null
     {
-        $this->cache->tags($this->entityName)->flush();
+        if (method_exists($this->cache->getStore(), 'tags')) {
+            $this->cache->tags($this->entityName)->flush();
+        }else{
+            $this->cache->flush();
+        }
 
         return $this->repository->update($model, $data);
     }
@@ -126,7 +134,11 @@ abstract class BaseCacheDecorator implements BaseRepository
      */
     public function destroy($model): bool
     {
-        $this->cache->tags($this->entityName)->flush();
+        if (method_exists($this->cache->getStore(), 'tags')) {
+            $this->cache->tags($this->entityName)->flush();
+        }else{
+            $this->cache->flush();
+        }
 
         return $this->repository->destroy($model);
     }

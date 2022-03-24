@@ -11,7 +11,7 @@ class PostInstallCommands implements SetupScript
      * @var array
      */
     protected $postCommands = [
-    'key:generate' => [],
+    'key:generate --ansi' => [],
     'migrate' => [],
     'passport:install' => [],
     'module:publish-config' => [

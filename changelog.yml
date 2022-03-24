@@ -1,5 +1,8 @@
 url: https://github.com/tecnodesignc/core-module
 versions:
+  "2.0.1":
+    changed:
+      - BaseCacheDecorator Support for File Drive Cache
   "2.0.0":
     changed:
       - Laravel 9 compatibility
