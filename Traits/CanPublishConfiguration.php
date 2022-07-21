@@ -38,6 +38,6 @@ trait CanPublishConfiguration
      */
     private function getModulePath($module)
     {
-        return base_path('Modules' . DIRECTORY_SEPARATOR . ucfirst($module));
+        return base_path('modules' . DIRECTORY_SEPARATOR . ucfirst($module));
     }
 }

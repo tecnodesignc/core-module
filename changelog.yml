@@ -1,5 +1,8 @@
 url: https://github.com/tecnodesignc/core-module
 versions:
+  "2.0.3":
+    changed:
+      - Fix CanPublishConfiguration Trait
   "2.0.2":
     chamged:
       - BaseCacheDecorator Support for File Drive Cache
