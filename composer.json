@@ -31,20 +31,20 @@
         "composer/installers": "^2.1",
         "nwidart/laravel-modules": "^9.0",
         "laravelcollective/html": "^6.3",
-        "tecnodesignc/presenter": "^0.2.5",
-        "astrotomic/laravel-translatable": "^11.10",
+        "tecnodesignc/presenter": "^0.2.6",
+        "astrotomic/laravel-translatable": "^11.12",
         "mcamara/laravel-localization": "^1.7",
-        "tecnodesignc/stylist": "^2.0.1",
-        "maatwebsite/laravel-sidebar": "^2.5",
-        "yajra/laravel-datatables-oracle": "^9.15",
-        "tightenco/ziggy": "^1.4",
-        "spatie/laravel-responsecache": "^7.2"
+        "tecnodesignc/stylist": "^2.1",
+        "tecnodesingc/laravel-sidebar": "~2.6",
+        "yajra/laravel-datatables-oracle": "^10.3.1",
+        "tightenco/ziggy": "^1.5",
+        "spatie/laravel-responsecache": "^7.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "orchestra/testbench": "3.8.*",
         "mockery/mockery": "^1.4.4",
-        "friendsofphp/php-cs-fixer": "^2.12"
+        "friendsofphp/php-cs-fixer": "^3.14"
     },
     "autoload": {
         "psr-4": {
