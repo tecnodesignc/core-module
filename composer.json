@@ -1,57 +1,57 @@
 {
-    "name": "tecnodesignc/core-module",
-    "type": "encore-module",
-    "description": "The core module for EncoreCMS 2.0. This is required for every install",
-    "keywords": [
-        "encorecms",
-        "core"
-    ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Marcos Rativa",
-            "email": "info@tecnodesign.com",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "email": "support@tecnodesign.com.co",
-        "issues": "https://github.com/tecnodesignc/encorecms/issues",
-        "source": "https://github.com/tecnodesignc/core-module"
-    },
-    "extra": {
-        "laravel": {
-            "providers": [],
-            "aliases": {
-            }
-        }
-    },
-    "require": {
-        "php": ">=8.0",
-        "composer/installers": "^2.1",
-        "nwidart/laravel-modules": "^9.0",
-        "laravelcollective/html": "^6.3",
-        "tecnodesignc/presenter": "^0.2.6",
-        "astrotomic/laravel-translatable": "^11.12",
-        "mcamara/laravel-localization": "^1.7",
-        "tecnodesignc/stylist": "^2.1",
-        "tecnodesingc/laravel-sidebar": "~2.6",
-        "yajra/laravel-datatables-oracle": "^10.3.1",
-        "tightenco/ziggy": "^1.5",
-        "spatie/laravel-responsecache": "^7.4"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.5",
-        "orchestra/testbench": "3.8.*",
-        "mockery/mockery": "^1.4.4",
-        "friendsofphp/php-cs-fixer": "^3.14"
-    },
-    "autoload": {
-        "psr-4": {
-            "Modules\\Core\\": ".",
-            "Modules\\": "modules/"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+  "name": "tecnodesignc/core-module",
+  "type": "encore-module",
+  "description": "The core module for EncoreCMS 2.1. This is required for every install",
+  "keywords": [
+    "encorecms",
+    "core"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marcos Rativa",
+      "email": "info@tecnodesign.com.co",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "support@tecnodesign.com.co",
+    "issues": "https://github.com/tecnodesignc/encorecms/issues",
+    "source": "https://github.com/tecnodesignc/core-module"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [],
+      "aliases": {
+      }
+    }
+  },
+  "require": {
+    "php": ">=8.0",
+    "composer/installers": "^2.1",
+    "nwidart/laravel-modules": "^9.0",
+    "laravelcollective/html": "^6.3",
+    "tecnodesignc/presenter": "^0.2.6",
+    "astrotomic/laravel-translatable": "^11.12",
+    "mcamara/laravel-localization": "^1.7",
+    "tecnodesignc/stylist": "^2.1",
+    "tecnodesingc/laravel-sidebar": "^2.7",
+    "yajra/laravel-datatables-oracle": "^10.3.1",
+    "tightenco/ziggy": "^1.5",
+    "spatie/laravel-responsecache": "^7.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "orchestra/testbench": "3.8.*",
+    "mockery/mockery": "^1.4.4",
+    "friendsofphp/php-cs-fixer": "^3.14"
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Core\\": ".",
+      "Modules\\": "modules/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
