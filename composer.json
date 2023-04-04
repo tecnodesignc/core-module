@@ -29,7 +29,7 @@
   "require": {
     "php": ">=8.0",
     "composer/installers": "^2.1",
-    "nwidart/laravel-modules": "^9.0",
+    "nwidart/laravel-modules": "^10.0",
     "laravelcollective/html": "^6.3",
     "tecnodesignc/presenter": "^0.2.6",
     "astrotomic/laravel-translatable": "^11.12",
