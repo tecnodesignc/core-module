@@ -2,14 +2,14 @@
     "title": "Core",
     "name": "Core",
     "alias": "core",
-    "description": "The core module for EncoreCMS 2.1. This is required for every install",
+    "description": "The core module for EncoreCMS 3.0 This is required for every install",
     "keywords": [
         "EncoreCMS",
         "core"
     ],
     "author": "Marcos Rativa",
     "require": {},
-    "version": "2.1.1",
+    "version": "3.0.0",
     "active": 1,
     "priority": 0,
     "providers": [
@@ -28,7 +28,7 @@
         "macros.php",
         "collectionMacros.php"
     ],
-    "minimumCoreVersion": "2.1",
-    "compatibility": "2.1",
+    "minimumCoreVersion": "3.0",
+    "compatibility": "3.0",
     "authors": ["Marcos Rativa"]
 }

@@ -124,7 +124,6 @@ final class EncoreAssetManager implements AssetManager
 
         try {
             if (is_null($assetPath)) {
-                var_dump(is_null($assetPath));
                 throw new AssetNotFoundException($assetPath);
             }
         }catch (\Exception $e){

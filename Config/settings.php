@@ -30,6 +30,7 @@ return [
         'view' => 'core::fields.select-locales',
         'translatable' => false,
     ],
+
     'id-facebook' => [
         'description' => 'core::settings.Id facebook',
         'view' => 'text',
